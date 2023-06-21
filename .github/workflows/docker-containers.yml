@@ -87,6 +87,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           provenance: false
           # push: ${{env.DOCKER_PUSH == 'true'}}
+          push: true
           # tags: pglombardo/pwpush-${{ matrix.dbType }}:${{ env.DOCKER_TAG }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
