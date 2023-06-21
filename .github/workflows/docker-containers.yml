@@ -18,12 +18,12 @@ on:
   #       required: true
   #       type: boolean
   #       default: false
-  # schedule:
-  #   # * is a special character in YAML so you have to quote this string
-  #   # Run every day at 5:24 UTC - build 'latest' docker containers
-  #   - cron: "24 17 * * *"
-# env:
-#   DOCKER_PUSH: true
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # Run every day at 5:24 UTC - build 'latest' docker containers
+    - cron: "24 17 * * *"
+env:
+  DOCKER_PUSH: true
 #   DOCKER_TAG:
 
 jobs:
@@ -74,9 +74,12 @@ jobs:
           images: ${{ secrets.DOCKER_USERNAME }}/pwpush-${{ matrix.dbType }}
           tags: |
             type=match,pattern=release
+            type=schedule,pattern=latest
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            # Disable the latest tag from the release tag.  type=match has auto for creating a latest tag too.
+            type=raw,value=latest,enable=${{ !(github.ref == format('refs/tags/{0}', 'release')) }}
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -91,8 +94,8 @@ jobs:
           file: ./containers/docker/pwpush-${{ matrix.dbType }}/Dockerfile
           platforms: linux/amd64,linux/arm64
           provenance: false
-          # push: ${{env.DOCKER_PUSH == 'true'}}
-          push: true
+          push: ${{ env.DOCKER_PUSH }}
+          # push: true
           # tags: pglombardo/pwpush-${{ matrix.dbType }}:${{ env.DOCKER_TAG }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
