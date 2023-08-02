@@ -39,7 +39,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: pglombardo/pwpush-${{ matrix.dbType }}
+          images: ${{ secrets.DOCKER_USERNAME }}/pwpush-${{ matrix.dbType }}
           flavor: |
             latest=false
           tags: |
