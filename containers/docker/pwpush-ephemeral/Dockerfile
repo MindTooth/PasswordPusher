@@ -1,5 +1,5 @@
 # pwpush-ephemeral
-FROM ruby:3.2-alpine AS build-env
+FROM ruby:3.2.1-alpine AS build-env
 
 LABEL maintainer='pglombardo@hey.com'
 
@@ -39,7 +39,7 @@ RUN rm -rf node_modules tmp/cache vendor/assets spec \
 
 ################## Build done ##################
 
-FROM ruby:3.2-alpine
+FROM ruby:3.2.1-alpine
 
 LABEL maintainer='pglombardo@hey.com'
 
