@@ -32,6 +32,7 @@ ENV RACK_ENV=production RAILS_ENV=production
 
 RUN bundle config set without "${BUNDLE_WITHOUT}" \
     && bundle config set deployment "${BUNDLE_DEPLOYMENT}" \
+    && bundle config set version system \
     && bundle install
 
 # Removing unneccesary files/directories
